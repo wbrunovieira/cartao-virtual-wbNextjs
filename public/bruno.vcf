@@ -1,0 +1,15 @@
+BEGIN:VCARD
+VERSION:3.0
+FN:Bruno Vieira
+N:Vieira;Bruno;;;
+ORG:WB Digital Solutions
+TEL;TYPE=WORK,VOICE:+55 11 5026-4203
+TEL;TYPE=CELL,VOICE:+55 11 98286-4581
+EMAIL:bruno@wbdigitalsolutions.com
+URL:https://wbdigitalsolutions.com
+X-FACEBOOK:https://facebook.com/wb.digitalsolutions
+X-INSTAGRAM:https://instagram.com/wb.digitalsolutions
+X-WHATSAPP:https://wa.me/5511982864581
+X-LINKEDIN:https://linkedin.com/in/brunovieira
+X-GITHUB:https://github.com/wbrunovieira
+END:VCARD
