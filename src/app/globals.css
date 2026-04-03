@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 @theme {
-    
-          --color-primary: #350545;
-          --color-custom-purple: #792990;
+  --color-primary: #350545;
+  --color-custom-purple: #792990;
+  --color-yellowcustom: #ffb947;
 
-          --color-yellowcustom: #ffb947;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
