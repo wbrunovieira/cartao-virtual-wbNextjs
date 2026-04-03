@@ -8,3 +8,9 @@
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
+html,
+body {
+  background-color: #1a0226;
+  overscroll-behavior: none;
+}
+

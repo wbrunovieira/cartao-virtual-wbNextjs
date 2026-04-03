@@ -1,4 +1,8 @@
 // src/app/layout.tsx
+// No server data — build as static HTML, CDN-cacheable indefinitely
+export const dynamic = 'force-static';
+export const revalidate = false;
+
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
