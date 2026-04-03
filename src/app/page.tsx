@@ -266,7 +266,10 @@ export default function Home() {
                 {t('welcomeBodyBefore')}
                 <span className="text-white/90 font-medium">{t('welcomeBodyHighlight')}</span>.
               </p>
-              <p className="text-white/60 text-sm leading-relaxed mt-3">
+              <p className="text-white/80 text-sm leading-relaxed mt-3">
+                💾 {t('welcomeSaveHint')}
+              </p>
+              <p className="text-white/60 text-sm leading-relaxed mt-2">
                 {t('welcomeBodyAfter')} 👇
               </p>
               <div className="flex items-center gap-3 mt-4">
