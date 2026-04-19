@@ -28,8 +28,17 @@ Single-page Next.js 15 app (App Router). The entire UI lives in `src/app/page.ts
 
 Tailwind CSS v4 (imported via `@import "tailwindcss"` in `globals.css`). Custom colors are defined as CSS variables in the `@theme` block and used as Tailwind utilities (`text-primary`, `bg-custom-purple`, `text-yellowcustom`).
 
+## i18n
+
+Translations live in `src/lib/translations.ts` as a static `Record<Locale, TranslationDict>`. Supported locales: `pt` (default), `en`, `es`, `it`. The `useLocale` hook (`src/hooks/useLocale.ts`) auto-detects locale from the `?lang=` query param or `navigator.language`, then falls back to `pt`. To add a new translatable string, extend `TranslationDict` and add entries for all four locales.
+
+## Animations
+
+Framer Motion v12 (`framer-motion`) with `LazyMotion + domMax` for tree-shaking. All variants are module-level constants (`fadeUp`, `slideIn`, `staggerContainer`) using the shared `EASE` cubic-bezier tuple. Animated background orbs use infinite `mirror` transitions.
+
 ## Dependencies
 
+- `framer-motion` — Page animations and transitions
 - `qrcode.react` — QR code pointing to `card.wbdigitalsolutions.com`
 - `react-icons/fa` — Font Awesome icons for social/contact links
 - `next/image` — Used for the logo (requires `width`/`height`)

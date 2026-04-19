@@ -158,10 +158,18 @@ export default function Home() {
     {
       href: 'mailto:bruno@wbdigitalsolutions.com',
       icon: <FaEnvelope className="text-base" />,
-      label: 'Email',
+      label: 'Email · WB',
       value: 'bruno@wbdigitalsolutions.com',
       color: 'text-yellowcustom',
       iconBg: 'rgba(255,185,71,0.15)',
+    },
+    {
+      href: 'mailto:bruno@saltoup.com',
+      icon: <FaEnvelope className="text-base" />,
+      label: 'Email · Salto',
+      value: 'bruno@saltoup.com',
+      color: 'text-orange-400',
+      iconBg: 'rgba(255,92,0,0.15)',
     },
   ];
 
@@ -169,10 +177,18 @@ export default function Home() {
     {
       href: 'https://www.wbdigitalsolutions.com',
       icon: <FaGlobe className="text-base" />,
-      label: t('labelSite'),
+      label: 'Site · WB',
       value: 'wbdigitalsolutions.com',
       color: 'text-sky-400',
       iconBg: 'rgba(56,189,248,0.15)',
+    },
+    {
+      href: 'https://saltoup.com/pt',
+      icon: <FaGlobe className="text-base" />,
+      label: 'Site · Salto',
+      value: 'saltoup.com',
+      color: 'text-orange-400',
+      iconBg: 'rgba(255,92,0,0.15)',
     },
     {
       href: 'https://www.linkedin.com/in/walter-bruno-vieira/',

@@ -5,8 +5,10 @@ N:Vieira;Bruno;;;
 ORG:WB Digital Solutions
 TEL;TYPE=WORK,VOICE:+55 11 5026-4203
 TEL;TYPE=CELL,VOICE:+55 11 98286-4581
-EMAIL:bruno@wbdigitalsolutions.com
+EMAIL;TYPE=WORK:bruno@wbdigitalsolutions.com
+EMAIL;TYPE=WORK:bruno@saltoup.com
 URL:https://wbdigitalsolutions.com
+URL:https://saltoup.com/pt
 X-FACEBOOK:https://facebook.com/wb.digitalsolutions
 X-INSTAGRAM:https://instagram.com/wb.digitalsolutions
 X-INSTAGRAM;TYPE=PERSONAL:https://instagram.com/wbrunovieira
