@@ -21,6 +21,8 @@ Single-page Next.js 15 app (App Router). The entire UI lives in `src/app/page.ts
 - `src/app/page.tsx` — The card UI. All contact data is hardcoded in the `cardData` object at the top of the component.
 - `src/app/globals.css` — Tailwind v4 setup with custom theme tokens (`--color-primary`, `--color-custom-purple`, `--color-yellowcustom`).
 - `src/app/layout.tsx` — Root layout with Geist fonts and page metadata.
+- `src/lib/translations.ts` — All UI strings keyed by locale (`pt`, `en`, `es`, `it`).
+- `src/hooks/useLocale.ts` — Reads `?lang=` query param or `navigator.language`; returns current locale and a setter.
 - `public/bruno.vcf` — vCard file for the "Salvar Contato" download button.
 - `public/logo.svg` — Company logo displayed on the card.
 
