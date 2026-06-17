@@ -1,5 +1,13 @@
 'use client';
-import { motion as m, LazyMotion, domMax } from 'framer-motion';
+import {
+  motion as m,
+  LazyMotion,
+  domMax,
+  MotionConfig,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from 'framer-motion';
 import dynamic from 'next/dynamic';
 import {
   FaWhatsapp,
@@ -38,19 +46,34 @@ const LANGS: { code: Locale; flag: string; label: string }[] = [
   { code: 'it', flag: '🇮🇹', label: 'IT' },
 ];
 
+// Shared viewport config for scroll-triggered reveals — fire once, a bit
+// before the element is fully on screen.
+const VIEWPORT = { once: true, margin: '-12% 0px' } as const;
+// Props applied to any block that should reveal as it scrolls into view.
+const reveal = { initial: 'hidden', whileInView: 'show', viewport: VIEWPORT } as const;
+
 const stagger = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+  show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
 };
 
+// y is a transform, so MotionConfig reducedMotion="user" neutralizes it
+// automatically — reduced-motion users get a clean fade with no blur/slide.
 const fadeUp = {
-  hidden: { opacity: 0, y: 32, filter: 'blur(6px)' },
-  show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.55, ease: EASE } },
+  hidden: { opacity: 0, y: 28 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE } },
 };
 
 const slideIn = {
   hidden: { opacity: 0, x: -16 },
   show: { opacity: 1, x: 0, transition: { duration: 0.35, ease: EASE } },
+};
+
+// Grid tiles pop in place (scale/opacity) instead of sliding sideways, which
+// fights a 2-column layout.
+const popIn = {
+  hidden: { opacity: 0, scale: 0.92 },
+  show: { opacity: 1, scale: 1, transition: { duration: 0.35, ease: EASE } },
 };
 
 type LinkItem = {
@@ -67,6 +90,7 @@ function LinkCard({ title, links, dark = false }: { title: string; links: LinkIt
   return (
     <m.div
       variants={fadeUp}
+      {...reveal}
       className={`rounded-3xl overflow-hidden border shadow-2xl mb-4 ${
         dark
           ? 'bg-[#141414] border-[#252525]'
@@ -74,11 +98,11 @@ function LinkCard({ title, links, dark = false }: { title: string; links: LinkIt
       }`}
     >
       <div className="px-4 pt-4 pb-1">
-        <p className={`text-[10px] uppercase tracking-widest mb-2 ${dark ? 'text-[#888]' : 'text-white/40'}`}>
+        <p className={`text-[10px] uppercase tracking-widest mb-2 ${dark ? 'text-[#999]' : 'text-white/60'}`}>
           {title}
         </p>
       </div>
-      <m.div variants={stagger} initial="hidden" animate="show" className="px-4 pb-4 flex flex-col gap-2">
+      <m.div variants={stagger} {...reveal} className="px-4 pb-4 flex flex-col gap-2">
         {links.map(({ href, icon, label, value, color, iconBg, prefix }) => (
           <m.a
             key={label}
@@ -105,7 +129,7 @@ function LinkCard({ title, links, dark = false }: { title: string; links: LinkIt
               {icon}
             </span>
             <div className="min-w-0 flex-1">
-              <p className={`text-[10px] uppercase tracking-widest leading-none mb-0.5 ${dark ? 'text-[#888]' : 'text-white/50'}`}>
+              <p className={`text-[10px] uppercase tracking-widest leading-none mb-0.5 ${dark ? 'text-[#999]' : 'text-white/60'}`}>
                 {label}
               </p>
               <p className={`text-sm font-medium truncate ${dark ? 'text-[#f5f5f5]' : 'text-white'}`}>
@@ -125,18 +149,45 @@ function LinkCard({ title, links, dark = false }: { title: string; links: LinkIt
   );
 }
 
-function Orb({ className, animate }: { className: string; animate: Record<string, number[]> }) {
+// Atmospheric glow. Animating opacity (not x/y) avoids re-rasterizing the
+// 64px blur layer every frame; reduced-motion users get a static glow.
+function Orb({
+  className,
+  opacity,
+  duration = 9,
+  reduce = false,
+}: {
+  className: string;
+  opacity: [number, number];
+  duration?: number;
+  reduce?: boolean;
+}) {
   return (
     <m.div
       className={`absolute rounded-full blur-3xl pointer-events-none ${className}`}
-      animate={animate}
-      transition={{ duration: 8, repeat: Infinity, repeatType: 'mirror', ease: 'easeInOut' }}
+      style={{ opacity: opacity[0] }}
+      animate={reduce ? undefined : { opacity: [opacity[0], opacity[1], opacity[0]] }}
+      transition={
+        reduce
+          ? undefined
+          : { duration, repeat: Infinity, repeatType: 'mirror', ease: 'easeInOut' }
+      }
     />
   );
 }
 
 export default function Home() {
   const { t, locale, setLocale } = useLocale();
+  const reduce = useReducedMotion() ?? false;
+
+  // Scroll-driven "spine": a single left-edge line whose hue travels from the
+  // WB purple into the Salto orange as you move down the card.
+  const { scrollYProgress } = useScroll();
+  const spineColor = useTransform(
+    scrollYProgress,
+    [0, 0.5, 1],
+    ['#792990', '#9b3d6b', '#ff5c00']
+  );
 
   const sharedContactLinks: LinkItem[] = [
     {
@@ -259,13 +310,20 @@ export default function Home() {
 
   return (
     <LazyMotion features={domMax}>
-      <div className="min-h-screen bg-[#0e0e0e] flex items-start justify-center px-3 py-6 sm:px-4 sm:py-8">
+      <MotionConfig reducedMotion="user">
+        {/* Brand spine — left-edge line that shifts WB-purple → Salto-orange on scroll */}
         <m.div
-          className="relative w-full max-w-sm z-10"
-          variants={stagger}
-          initial="hidden"
-          animate="show"
-        >
+          aria-hidden
+          className="fixed left-0 top-0 bottom-0 z-30 w-1 pointer-events-none"
+          style={{ background: spineColor }}
+        />
+        <div className="min-h-screen bg-[#0e0e0e] flex items-start justify-center px-3 py-6 sm:px-4 sm:py-8">
+          <m.div
+            className="relative w-full max-w-sm z-10"
+            variants={stagger}
+            initial="hidden"
+            animate="show"
+          >
           {/* Language switcher */}
           <m.div variants={fadeUp} className="flex justify-center mb-4">
             <div className="flex gap-0.5 bg-white/10 backdrop-blur-md rounded-full p-1 border border-white/20 shadow-lg">
@@ -351,21 +409,28 @@ export default function Home() {
           {/* ── WB SECTION ── */}
           <div className="relative rounded-[2rem] overflow-hidden bg-gradient-to-br from-[#1a0226] via-[#350545] to-[#792990] p-4 mb-4">
             <Orb
-              className="w-72 h-72 bg-custom-purple opacity-30 -top-20 -left-20"
-              animate={{ x: [0, 30, 0], y: [0, 20, 0] }}
+              className="w-72 h-72 bg-custom-purple -top-20 -left-20"
+              opacity={[0.22, 0.36]}
+              duration={9}
+              reduce={reduce}
             />
             <Orb
-              className="w-96 h-96 bg-primary opacity-40 -bottom-32 -right-24"
-              animate={{ x: [0, -25, 0], y: [0, -30, 0] }}
+              className="w-96 h-96 bg-primary -bottom-32 -right-24"
+              opacity={[0.3, 0.46]}
+              duration={11}
+              reduce={reduce}
             />
             <Orb
-              className="w-48 h-48 bg-yellowcustom opacity-10 top-1/2 left-1/3"
-              animate={{ x: [0, 20, -10, 0], y: [0, -20, 10, 0] }}
+              className="w-48 h-48 bg-yellowcustom top-1/2 left-1/3"
+              opacity={[0.06, 0.16]}
+              duration={8}
+              reduce={reduce}
             />
 
             {/* WB header */}
             <m.div
               variants={fadeUp}
+              {...reveal}
               className="relative rounded-3xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl mb-4"
             >
               <div className="flex flex-col items-center pt-10 pb-8 px-6 gap-3">
@@ -387,15 +452,16 @@ export default function Home() {
             {/* Services */}
             <m.div
               variants={fadeUp}
+              {...reveal}
               className="rounded-3xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl"
             >
               <div className="p-5">
-                <h2 className="text-white/40 text-[10px] uppercase tracking-widest mb-3">{t('sectionServices')}</h2>
-                <m.div variants={stagger} initial="hidden" animate="show" className="grid grid-cols-2 gap-2">
+                <h2 className="text-white/60 text-[10px] uppercase tracking-widest mb-3">{t('sectionServices')}</h2>
+                <m.div variants={stagger} {...reveal} className="grid grid-cols-2 gap-2">
                   {t('services').map((label, i) => (
                     <m.div
                       key={label}
-                      variants={slideIn}
+                      variants={popIn}
                       className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 border border-white/10 text-center"
                     >
                       <span
@@ -413,27 +479,40 @@ export default function Home() {
           </div>
 
           {/* Divider */}
-          <m.div variants={fadeUp} className="flex items-center gap-3 mb-4 px-1">
+          <m.div variants={fadeUp} {...reveal} className="flex items-center gap-3 mb-4 px-1">
             <div className="h-px flex-1 bg-white/10" />
-            <span className="text-white/20 text-[10px] tracking-widest uppercase">Salto</span>
+            <span className="text-white/40 text-[10px] tracking-widest uppercase">Salto</span>
             <div className="h-px flex-1 bg-white/10" />
           </m.div>
 
           {/* ── SALTO SECTION ── */}
-          <div className="relative rounded-[2rem] overflow-hidden border border-[#252525] bg-gradient-to-b from-[#111111] to-[#1c0900] p-4 mb-4">
+          <div className="relative rounded-[2rem] overflow-hidden border border-[#3a1c08] bg-gradient-to-br from-[#1a0d02] via-[#241104] to-[#3a1a06] p-4 mb-4">
+            {/* orange accent hairline at the top edge */}
+            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#ff5c00]/70 to-transparent" />
             <Orb
-              className="w-72 h-72 bg-[#ff5c00] opacity-15 -top-24 -right-20"
-              animate={{ x: [0, -20, 0], y: [0, 25, 0] }}
+              className="w-72 h-72 bg-[#ff5c00] -top-24 -right-20"
+              opacity={[0.18, 0.32]}
+              duration={10}
+              reduce={reduce}
             />
             <Orb
-              className="w-48 h-48 bg-[#ff3d00] opacity-10 bottom-0 -left-16"
-              animate={{ x: [0, 18, 0], y: [0, -18, 0] }}
+              className="w-48 h-48 bg-[#ff3d00] bottom-0 -left-16"
+              opacity={[0.12, 0.24]}
+              duration={9}
+              reduce={reduce}
+            />
+            <Orb
+              className="w-40 h-40 bg-[#ff8a3d] top-1/3 left-1/4"
+              opacity={[0.05, 0.14]}
+              duration={8}
+              reduce={reduce}
             />
 
             {/* Salto header */}
             <m.div
               variants={fadeUp}
-              className="relative rounded-3xl overflow-hidden bg-[#141414]/80 backdrop-blur-md border border-[#2a2a2a] shadow-2xl mb-4"
+              {...reveal}
+              className="relative rounded-3xl overflow-hidden bg-white/[0.06] backdrop-blur-md border border-[#ff5c00]/15 shadow-2xl mb-4"
             >
               <div className="flex flex-col items-center py-7 px-6">
                 <m.div
@@ -453,16 +532,17 @@ export default function Home() {
             {/* Salto Services */}
             <m.div
               variants={fadeUp}
-              className="rounded-3xl overflow-hidden bg-[#141414] border border-[#252525] shadow-2xl"
+              {...reveal}
+              className="rounded-3xl overflow-hidden bg-white/[0.04] backdrop-blur-md border border-[#ff5c00]/12 shadow-2xl"
             >
               <div className="p-5">
-                <h2 className="text-[#888] text-[10px] uppercase tracking-widest mb-3">{t('sectionServices')}</h2>
-                <m.div variants={stagger} initial="hidden" animate="show" className="grid grid-cols-2 gap-2">
+                <h2 className="text-[#bbb] text-[10px] uppercase tracking-widest mb-3">{t('sectionServices')}</h2>
+                <m.div variants={stagger} {...reveal} className="grid grid-cols-2 gap-2">
                   {saltoServices.map(({ icon, iconBg, color, label }) => (
                     <m.div
                       key={label}
-                      variants={slideIn}
-                      className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-[#1e1e1e] border border-[#2a2a2a] text-center"
+                      variants={popIn}
+                      className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-[#1e1e1e]/70 border border-[#3a2410] text-center"
                     >
                       <span
                         className={`${color} p-2.5 rounded-xl text-lg flex items-center justify-center`}
@@ -481,14 +561,18 @@ export default function Home() {
           {/* QR code — closes the card */}
           <m.div
             variants={fadeUp}
-            className="rounded-3xl overflow-hidden bg-[#141414] border border-[#252525] shadow-2xl"
+            {...reveal}
+            className="relative rounded-3xl overflow-hidden bg-gradient-to-b from-[#161616] to-[#0e0e0e] border border-[#252525] shadow-2xl"
           >
-            <div className="p-5 flex flex-col items-center gap-3">
-              <p className="text-[#888] text-[10px] uppercase tracking-widest">{t('sectionQr')}</p>
+            {/* closing accent hairline */}
+            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+            <div className="p-6 flex flex-col items-center gap-3">
+              <p className="text-[#aaa] text-[10px] uppercase tracking-widest">{t('sectionQr')}</p>
               <m.div
-                initial={{ opacity: 0, scale: 0.8, rotate: -4 }}
-                animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                transition={{ duration: 0.6, delay: 0.6, ease: EASE }}
+                initial={{ opacity: 0, scale: 0.85 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={VIEWPORT}
+                transition={{ duration: 0.5, ease: EASE }}
                 className="rounded-2xl overflow-hidden p-2 bg-white shadow-lg"
               >
                 <QRCodeCanvas
@@ -498,11 +582,13 @@ export default function Home() {
                   fgColor="#350545"
                 />
               </m.div>
-              <p className="text-[#666] text-[11px] tracking-wide">card.wbdigitalsolutions.com</p>
+              <p className="text-[#888] text-[11px] tracking-wide">card.wbdigitalsolutions.com</p>
+              <p className="text-[#555] text-[10px] tracking-wide mt-1">© Bruno Vieira</p>
             </div>
           </m.div>
         </m.div>
-      </div>
+        </div>
+      </MotionConfig>
     </LazyMotion>
   );
 }

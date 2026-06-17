@@ -16,9 +16,15 @@ body {
 
 /* Dark-theme overrides for react-phone-number-input */
 .exchange-phone {
-  --PhoneInputCountrySelectArrow-color: #888;
+  --PhoneInputCountrySelectArrow-color: #aaa;
   --PhoneInputCountrySelectArrow-opacity: 1;
   --PhoneInput-color--focus: #ff5c00;
+}
+
+/* The country select is a native <select>; color-scheme makes its
+   OS-rendered option list render dark instead of flashing light. */
+.exchange-phone .PhoneInputCountrySelect {
+  color-scheme: dark;
 }
 
 .exchange-phone .PhoneInputCountry {
