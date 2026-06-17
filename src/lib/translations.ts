@@ -16,6 +16,7 @@ export type TranslationDict = {
   exchangeNote: string;
   exchangeSubmit: string;
   exchangeSending: string;
+  exchangeSuccessTitle: string;
   exchangeSuccess: string;
   exchangeError: string;
   exchangeRequired: string;
@@ -48,6 +49,7 @@ export const translations: Record<Locale, TranslationDict> = {
     exchangeNote: 'Mensagem (opcional)',
     exchangeSubmit: 'Enviar contato',
     exchangeSending: 'Enviando…',
+    exchangeSuccessTitle: 'Contato recebido!',
     exchangeSuccess: 'Obrigado por enviar seus dados! 🙌 Em breve entro em contato.',
     exchangeError: 'Algo deu errado. Tente novamente.',
     exchangeRequired: 'Preencha nome e telefone ou e-mail.',
@@ -78,6 +80,7 @@ export const translations: Record<Locale, TranslationDict> = {
     exchangeNote: 'Message (optional)',
     exchangeSubmit: 'Send contact',
     exchangeSending: 'Sending…',
+    exchangeSuccessTitle: 'Contact received!',
     exchangeSuccess: "Thanks for sending your details! 🙌 I'll be in touch soon.",
     exchangeError: 'Something went wrong. Please try again.',
     exchangeRequired: 'Please fill in your name and phone or email.',
@@ -108,6 +111,7 @@ export const translations: Record<Locale, TranslationDict> = {
     exchangeNote: 'Mensaje (opcional)',
     exchangeSubmit: 'Enviar contacto',
     exchangeSending: 'Enviando…',
+    exchangeSuccessTitle: '¡Contacto recibido!',
     exchangeSuccess: '¡Gracias por enviar tus datos! 🙌 Pronto me pongo en contacto.',
     exchangeError: 'Algo salió mal. Inténtalo de nuevo.',
     exchangeRequired: 'Completa tu nombre y teléfono o correo.',
@@ -138,6 +142,7 @@ export const translations: Record<Locale, TranslationDict> = {
     exchangeNote: 'Messaggio (opzionale)',
     exchangeSubmit: 'Invia contatto',
     exchangeSending: 'Invio…',
+    exchangeSuccessTitle: 'Contatto ricevuto!',
     exchangeSuccess: 'Grazie per aver inviato i tuoi dati! 🙌 Ti contatterò presto.',
     exchangeError: 'Qualcosa è andato storto. Riprova.',
     exchangeRequired: 'Inserisci nome e telefono o email.',

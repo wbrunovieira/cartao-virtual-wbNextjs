@@ -221,11 +221,13 @@ export default function ExchangeContact({ locale }: { locale: Locale }) {
                     <div className="flex items-start justify-between px-5 pt-5">
                       <div className="pr-3">
                         <h2 id="exchange-title" className="text-lg font-bold text-[#f5f5f5]">
-                          {t.exchangeTitle}
+                          {status === 'success' ? t.exchangeSuccessTitle : t.exchangeTitle}
                         </h2>
-                        <p id="exchange-desc" className="text-[#999] text-xs mt-1 leading-relaxed">
-                          {t.exchangeSubtitle}
-                        </p>
+                        {status !== 'success' && (
+                          <p id="exchange-desc" className="text-[#999] text-xs mt-1 leading-relaxed">
+                            {t.exchangeSubtitle}
+                          </p>
+                        )}
                       </div>
                       <button
                         type="button"
