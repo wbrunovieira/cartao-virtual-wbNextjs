@@ -22,6 +22,7 @@ import {
 import Image from 'next/image';
 import { useLocale } from '@/hooks/useLocale';
 import type { Locale } from '@/lib/translations';
+import ExchangeContact from '@/components/ExchangeContact';
 
 const QRCodeCanvas = dynamic(
   () => import('qrcode.react').then((m) => ({ default: m.QRCodeCanvas })),
@@ -304,9 +305,11 @@ export default function Home() {
               <h2 className="text-[#f5f5f5] font-semibold text-base mb-2 leading-snug">
                 {t('welcomeHeadline')}
               </h2>
-              <p className="text-[#888] text-sm leading-relaxed">
-                {t('welcomeBody')}
-              </p>
+              <div className="text-[#888] text-sm leading-relaxed space-y-3">
+                {t('welcomeBody').split('\n\n').map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))}
+              </div>
               <p className="text-[#f5f5f5]/50 text-sm leading-relaxed mt-4">{t('welcomeCta')}</p>
             </div>
           </m.div>
@@ -337,8 +340,84 @@ export default function Home() {
             {t('saveContact')}
           </m.a>
 
+          {/* Exchange contact — visitor sends their details */}
+          <m.div variants={fadeUp}>
+            <ExchangeContact locale={locale} />
+          </m.div>
+
           {/* Shared contacts */}
           <LinkCard title={t('sectionContact')} links={sharedContactLinks} dark />
+
+          {/* ── WB SECTION ── */}
+          <div className="relative rounded-[2rem] overflow-hidden bg-gradient-to-br from-[#1a0226] via-[#350545] to-[#792990] p-4 mb-4">
+            <Orb
+              className="w-72 h-72 bg-custom-purple opacity-30 -top-20 -left-20"
+              animate={{ x: [0, 30, 0], y: [0, 20, 0] }}
+            />
+            <Orb
+              className="w-96 h-96 bg-primary opacity-40 -bottom-32 -right-24"
+              animate={{ x: [0, -25, 0], y: [0, -30, 0] }}
+            />
+            <Orb
+              className="w-48 h-48 bg-yellowcustom opacity-10 top-1/2 left-1/3"
+              animate={{ x: [0, 20, -10, 0], y: [0, -20, 10, 0] }}
+            />
+
+            {/* WB header */}
+            <m.div
+              variants={fadeUp}
+              className="relative rounded-3xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl mb-4"
+            >
+              <div className="flex flex-col items-center pt-10 pb-8 px-6 gap-3">
+                <m.div
+                  initial={{ scale: 0.7, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.6, ease: EASE, delay: 0.15 }}
+                  className="rounded-2xl ring-2 ring-white/30 overflow-hidden shadow-2xl bg-white px-4 py-4 sm:px-6"
+                >
+                  <Image src="/logo.svg" alt="Logo WB Digital Solutions" width={220} height={62} priority />
+                </m.div>
+
+              </div>
+            </m.div>
+
+            <LinkCard title={t('sectionContact')} links={wbContactLinks} />
+            <LinkCard title={t('sectionSocial')} links={wbSocialLinks} />
+
+            {/* Services */}
+            <m.div
+              variants={fadeUp}
+              className="rounded-3xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl"
+            >
+              <div className="p-5">
+                <h2 className="text-white/40 text-[10px] uppercase tracking-widest mb-3">{t('sectionServices')}</h2>
+                <m.div variants={stagger} initial="hidden" animate="show" className="grid grid-cols-2 gap-2">
+                  {t('services').map((label, i) => (
+                    <m.div
+                      key={label}
+                      variants={slideIn}
+                      className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 border border-white/10 text-center"
+                    >
+                      <span
+                        className={`${serviceIcons[i].color} p-2.5 rounded-xl text-lg flex items-center justify-center`}
+                        style={{ background: serviceIcons[i].iconBg }}
+                      >
+                        {serviceIcons[i].icon}
+                      </span>
+                      <span className="text-white/90 text-xs leading-snug">{label}</span>
+                    </m.div>
+                  ))}
+                </m.div>
+              </div>
+            </m.div>
+          </div>
+
+          {/* Divider */}
+          <m.div variants={fadeUp} className="flex items-center gap-3 mb-4 px-1">
+            <div className="h-px flex-1 bg-white/10" />
+            <span className="text-white/20 text-[10px] tracking-widest uppercase">Salto</span>
+            <div className="h-px flex-1 bg-white/10" />
+          </m.div>
 
           {/* ── SALTO SECTION ── */}
           <div className="relative rounded-[2rem] overflow-hidden border border-[#252525] bg-gradient-to-b from-[#111111] to-[#1c0900] p-4 mb-4">
@@ -399,100 +478,29 @@ export default function Home() {
             </m.div>
           </div>
 
-          {/* Divider */}
-          <m.div variants={fadeUp} className="flex items-center gap-3 mb-4 px-1">
-            <div className="h-px flex-1 bg-white/10" />
-            <span className="text-white/20 text-[10px] tracking-widest uppercase">WB Digital Solutions</span>
-            <div className="h-px flex-1 bg-white/10" />
+          {/* QR code — closes the card */}
+          <m.div
+            variants={fadeUp}
+            className="rounded-3xl overflow-hidden bg-[#141414] border border-[#252525] shadow-2xl"
+          >
+            <div className="p-5 flex flex-col items-center gap-3">
+              <p className="text-[#888] text-[10px] uppercase tracking-widest">{t('sectionQr')}</p>
+              <m.div
+                initial={{ opacity: 0, scale: 0.8, rotate: -4 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                transition={{ duration: 0.6, delay: 0.6, ease: EASE }}
+                className="rounded-2xl overflow-hidden p-2 bg-white shadow-lg"
+              >
+                <QRCodeCanvas
+                  value="https://card.wbdigitalsolutions.com"
+                  size={120}
+                  bgColor="#ffffff"
+                  fgColor="#350545"
+                />
+              </m.div>
+              <p className="text-[#666] text-[11px] tracking-wide">card.wbdigitalsolutions.com</p>
+            </div>
           </m.div>
-
-          {/* ── WB SECTION ── */}
-          <div className="relative rounded-[2rem] overflow-hidden bg-gradient-to-br from-[#1a0226] via-[#350545] to-[#792990] p-4">
-            <Orb
-              className="w-72 h-72 bg-custom-purple opacity-30 -top-20 -left-20"
-              animate={{ x: [0, 30, 0], y: [0, 20, 0] }}
-            />
-            <Orb
-              className="w-96 h-96 bg-primary opacity-40 -bottom-32 -right-24"
-              animate={{ x: [0, -25, 0], y: [0, -30, 0] }}
-            />
-            <Orb
-              className="w-48 h-48 bg-yellowcustom opacity-10 top-1/2 left-1/3"
-              animate={{ x: [0, 20, -10, 0], y: [0, -20, 10, 0] }}
-            />
-
-            {/* WB header */}
-            <m.div
-              variants={fadeUp}
-              className="relative rounded-3xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl mb-4"
-            >
-              <div className="flex flex-col items-center pt-10 pb-8 px-6 gap-3">
-                <m.div
-                  initial={{ scale: 0.7, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.6, ease: EASE, delay: 0.15 }}
-                  className="rounded-2xl ring-2 ring-white/30 overflow-hidden shadow-2xl bg-white px-4 py-4 sm:px-6"
-                >
-                  <Image src="/logo.svg" alt="Logo WB Digital Solutions" width={220} height={62} priority />
-                </m.div>
-
-              </div>
-            </m.div>
-
-            <LinkCard title={t('sectionContact')} links={wbContactLinks} />
-            <LinkCard title={t('sectionSocial')} links={wbSocialLinks} />
-
-            {/* Services */}
-            <m.div
-              variants={fadeUp}
-              className="rounded-3xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl mb-4"
-            >
-              <div className="p-5">
-                <h2 className="text-white/40 text-[10px] uppercase tracking-widest mb-3">{t('sectionServices')}</h2>
-                <m.div variants={stagger} initial="hidden" animate="show" className="grid grid-cols-2 gap-2">
-                  {t('services').map((label, i) => (
-                    <m.div
-                      key={label}
-                      variants={slideIn}
-                      className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 border border-white/10 text-center"
-                    >
-                      <span
-                        className={`${serviceIcons[i].color} p-2.5 rounded-xl text-lg flex items-center justify-center`}
-                        style={{ background: serviceIcons[i].iconBg }}
-                      >
-                        {serviceIcons[i].icon}
-                      </span>
-                      <span className="text-white/90 text-xs leading-snug">{label}</span>
-                    </m.div>
-                  ))}
-                </m.div>
-              </div>
-            </m.div>
-
-            {/* QR code */}
-            <m.div
-              variants={fadeUp}
-              className="rounded-3xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl"
-            >
-              <div className="p-5 flex flex-col items-center gap-3">
-                <p className="text-white/40 text-[10px] uppercase tracking-widest">{t('sectionQr')}</p>
-                <m.div
-                  initial={{ opacity: 0, scale: 0.8, rotate: -4 }}
-                  animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                  transition={{ duration: 0.6, delay: 0.6, ease: EASE }}
-                  className="rounded-2xl overflow-hidden p-2 bg-white shadow-lg"
-                >
-                  <QRCodeCanvas
-                    value="https://card.wbdigitalsolutions.com"
-                    size={120}
-                    bgColor="#ffffff"
-                    fgColor="#350545"
-                  />
-                </m.div>
-                <p className="text-white/30 text-[11px] tracking-wide">card.wbdigitalsolutions.com</p>
-              </div>
-            </m.div>
-          </div>
         </m.div>
       </div>
     </LazyMotion>

@@ -14,3 +14,37 @@ body {
   overscroll-behavior: none;
 }
 
+/* Dark-theme overrides for react-phone-number-input */
+.exchange-phone {
+  --PhoneInputCountrySelectArrow-color: #888;
+  --PhoneInputCountrySelectArrow-opacity: 1;
+  --PhoneInput-color--focus: #ff5c00;
+}
+
+.exchange-phone .PhoneInputCountry {
+  margin-right: 0.5rem;
+  padding: 0 0.75rem;
+  border-radius: 1rem;
+  background-color: #1e1e1e;
+  border: 1px solid #2a2a2a;
+}
+
+.exchange-phone .PhoneInputInput {
+  border-radius: 1rem;
+  background-color: #1e1e1e;
+  border: 1px solid #2a2a2a;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: #f5f5f5;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.exchange-phone .PhoneInputInput::placeholder {
+  color: #555;
+}
+
+.exchange-phone .PhoneInputInput:focus {
+  border-color: #ff5c00;
+}
+
