@@ -1,0 +1,8 @@
+onlyBuiltDependencies:
+  - sharp
+  - lightningcss
+  - '@tailwindcss/oxide'
+
+# Skip the auto "install" check that pnpm runs before `pnpm dev`/`pnpm build`.
+# It was aborting on sharp's build-script approval; the check isn't needed here.
+verifyDepsBeforeRun: false

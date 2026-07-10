@@ -18,7 +18,7 @@ body {
 .exchange-phone {
   --PhoneInputCountrySelectArrow-color: #aaa;
   --PhoneInputCountrySelectArrow-opacity: 1;
-  --PhoneInput-color--focus: #ff5c00;
+  --PhoneInput-color--focus: #792990;
 }
 
 /* The country select is a native <select>; color-scheme makes its
@@ -51,6 +51,6 @@ body {
 }
 
 .exchange-phone .PhoneInputInput:focus {
-  border-color: #ff5c00;
+  border-color: #792990;
 }
 

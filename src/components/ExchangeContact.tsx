@@ -169,7 +169,7 @@ export default function ExchangeContact({ locale }: { locale: Locale }) {
   }
 
   const inputClass =
-    'w-full rounded-2xl bg-[#1e1e1e] border border-[#2a2a2a] px-4 py-3 text-sm text-[#f5f5f5] placeholder:text-[#555] outline-none focus:border-[#ff5c00] transition-colors';
+    'w-full rounded-2xl bg-[#1e1e1e] border border-[#2a2a2a] px-4 py-3 text-sm text-[#f5f5f5] placeholder:text-[#555] outline-none focus:border-[#792990] transition-colors';
   const labelClass = 'text-[10px] uppercase tracking-widest text-[#aaa] mb-1.5 block';
 
   return (
