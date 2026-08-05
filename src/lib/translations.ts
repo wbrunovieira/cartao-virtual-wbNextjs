@@ -6,6 +6,10 @@ export type TranslationDict = {
   welcomeCta: string;
   role: string;
   saveContact: string;
+  shareButton: string;
+  shareWhatsapp: string;
+  shareText: string;
+  shareCopied: string;
   exchangeButton: string;
   exchangeTitle: string;
   exchangeSubtitle: string;
@@ -39,6 +43,10 @@ export const translations: Record<Locale, TranslationDict> = {
     welcomeCta: 'Salve meu contato e me chame pelo app que você já usa. 👇',
     role: 'Fundador · WB Digital Solutions',
     saveContact: 'Salvar Contato',
+    shareButton: 'Mais Opções',
+    shareWhatsapp: 'Compartilhar no WhatsApp',
+    shareText: 'Dá uma olhada no cartão digital do Bruno Vieira, da WB Digital Solutions:',
+    shareCopied: 'Link copiado!',
     exchangeButton: 'Enviar meus dados para o Bruno',
     exchangeTitle: 'Envie seus dados para mim',
     exchangeSubtitle: 'Preencha e envie: seus dados chegam direto para mim e eu salvo o seu contato no meu celular. O meu contato você guarda no botão “Salvar Contato” acima.',
@@ -70,6 +78,10 @@ export const translations: Record<Locale, TranslationDict> = {
     welcomeCta: 'Save my contact and reach me through the app you already use. 👇',
     role: 'Founder · WB Digital Solutions',
     saveContact: 'Save Contact',
+    shareButton: 'More Options',
+    shareWhatsapp: 'Share via WhatsApp',
+    shareText: "Check out Bruno Vieira's digital card, from WB Digital Solutions:",
+    shareCopied: 'Link copied!',
     exchangeButton: 'Send my details to Bruno',
     exchangeTitle: 'Send me your details',
     exchangeSubtitle: "Fill in and send: your details come straight to me and I'll save your contact on my phone. Grab mine with the “Save Contact” button above.",
@@ -101,6 +113,10 @@ export const translations: Record<Locale, TranslationDict> = {
     welcomeCta: 'Guarda mi contacto y escríbeme por el app que ya usas. 👇',
     role: 'Fundador · WB Digital Solutions',
     saveContact: 'Guardar Contacto',
+    shareButton: 'Más Opciones',
+    shareWhatsapp: 'Compartir por WhatsApp',
+    shareText: 'Échale un vistazo a la tarjeta digital de Bruno Vieira, de WB Digital Solutions:',
+    shareCopied: '¡Enlace copiado!',
     exchangeButton: 'Enviar mis datos a Bruno',
     exchangeTitle: 'Envíame tus datos',
     exchangeSubtitle: 'Rellena y envía: tus datos me llegan directo y guardo tu contacto en mi móvil. El mío lo guardas con el botón “Guardar Contacto” de arriba.',
@@ -132,6 +148,10 @@ export const translations: Record<Locale, TranslationDict> = {
     welcomeCta: "Salva il mio contatto e scrivimi tramite l'app che già usi. 👇",
     role: 'Fondatore · WB Digital Solutions',
     saveContact: 'Salva Contatto',
+    shareButton: 'Altre Opzioni',
+    shareWhatsapp: 'Condividi su WhatsApp',
+    shareText: 'Dai un’occhiata al biglietto digitale di Bruno Vieira, di WB Digital Solutions:',
+    shareCopied: 'Link copiato!',
     exchangeButton: 'Invia i miei dati a Bruno',
     exchangeTitle: 'Inviami i tuoi dati',
     exchangeSubtitle: 'Compila e invia: i tuoi dati arrivano dritti a me e salvo il tuo contatto sul mio telefono. Il mio lo salvi con il pulsante “Salva Contatto” qui sopra.',

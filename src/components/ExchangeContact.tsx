@@ -178,11 +178,21 @@ export default function ExchangeContact({ locale }: { locale: Locale }) {
       <m.button
         type="button"
         onClick={openModal}
-        whileHover={{ y: -2, transition: { duration: 0.25, ease: EASE } }}
-        whileTap={{ scale: 0.98, transition: { duration: 0.1 } }}
-        className="mb-4 w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl font-semibold text-sm tracking-wide cursor-pointer text-[#3ee08f] bg-[#16a35f]/10 border border-[#16a35f]/35 hover:bg-[#16a35f]/16 hover:border-[#16a35f]/55 transition-colors"
+        whileHover={{
+          y: -2,
+          borderColor: 'rgba(255,255,255,0.28)',
+          boxShadow: '0 2px 0 rgba(0,0,0,0.5), 0 8px 16px rgba(0,0,0,0.45)',
+          transition: { duration: 0.25, ease: EASE },
+        }}
+        whileTap={{ scale: 0.98, y: 0, transition: { duration: 0.1 } }}
+        className="mb-4 w-full flex items-center justify-center gap-2 py-3 rounded-2xl border border-white/[0.14] bg-[#1d1d1d] text-[#f5f5f5] font-semibold text-xs sm:text-sm tracking-wide cursor-pointer shadow-[0_2px_0_rgba(0,0,0,0.5),0_3px_8px_rgba(0,0,0,0.35)]"
       >
-        <FaUserPlus className="text-base" />
+        <span
+          className="shrink-0 p-1.5 rounded-lg flex items-center justify-center text-yellowcustom"
+          style={{ background: 'rgba(255,185,71,0.15)' }}
+        >
+          <FaUserPlus className="text-sm" />
+        </span>
         {t.exchangeButton}
       </m.button>
 

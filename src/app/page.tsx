@@ -27,6 +27,7 @@ import Image from 'next/image';
 import { useLocale } from '@/hooks/useLocale';
 import type { Locale } from '@/lib/translations';
 import ExchangeContact from '@/components/ExchangeContact';
+import ShareCard from '@/components/ShareCard';
 
 const QRCodeCanvas = dynamic(
   () => import('qrcode.react').then((m) => ({ default: m.QRCodeCanvas })),
@@ -356,6 +357,11 @@ export default function Home() {
           >
             {t('saveContact')}
           </m.a>
+
+          {/* Share card — visitor forwards this card to someone else */}
+          <m.div variants={fadeUp}>
+            <ShareCard locale={locale} />
+          </m.div>
 
           {/* Exchange contact — visitor sends their details */}
           <m.div variants={fadeUp}>
