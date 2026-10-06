@@ -11,16 +11,17 @@ const ring = (px: number) => {
 };
 
 // Profile photo framed by two arcs in the WB palette: a bright purple → yellow
-// arc that orbits clockwise (with a glowing head) and a faint counter-rotating
-// arc behind it. Only transforms animate, so it stays on the compositor;
-// reduced-motion users get the same frame, static.
+// arc with a glowing head and a faint arc behind it. The arcs sweep into place
+// once on load and then stay still — a continuous spin was too distracting.
+// Reduced-motion users get the final frame directly.
 export default function PhotoArc({ reduce = false }: { reduce?: boolean }) {
-  const spin = (duration: number, direction: 1 | -1) =>
+  const settle = (from: number, delay: number) =>
     reduce
       ? {}
       : {
-          animate: { rotate: 360 * direction },
-          transition: { duration, repeat: Infinity, ease: 'linear' as const },
+          initial: { rotate: from },
+          animate: { rotate: 0 },
+          transition: { duration: 1.4, ease: EASE, delay },
         };
 
   return (
@@ -30,7 +31,7 @@ export default function PhotoArc({ reduce = false }: { reduce?: boolean }) {
       transition={{ duration: 0.6, ease: EASE, delay: 0.1 }}
       className="relative shrink-0 w-[5.5rem] h-[5.5rem]"
     >
-      {/* Faint outer arc, counter-rotating */}
+      {/* Faint outer arc */}
       <m.div
         aria-hidden
         className="absolute -inset-1 rounded-full"
@@ -38,11 +39,11 @@ export default function PhotoArc({ reduce = false }: { reduce?: boolean }) {
           background: 'conic-gradient(from 180deg, transparent 0deg, rgba(255,255,255,0.22) 120deg, transparent 200deg)',
           ...ring(1),
         }}
-        {...spin(14, -1)}
+        {...settle(90, 0.2)}
       />
 
       {/* Main arc — fades in from transparent to purple to yellow, glowing head */}
-      <m.div aria-hidden className="absolute inset-0" {...spin(6, 1)}>
+      <m.div aria-hidden className="absolute inset-0" {...settle(-240, 0.1)}>
         <div
           className="absolute inset-0 rounded-full"
           style={{
