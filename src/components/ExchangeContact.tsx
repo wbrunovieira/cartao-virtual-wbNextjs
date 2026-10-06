@@ -185,7 +185,7 @@ export default function ExchangeContact({ locale }: { locale: Locale }) {
           transition: { duration: 0.25, ease: EASE },
         }}
         whileTap={{ scale: 0.98, y: 0, transition: { duration: 0.1 } }}
-        className="mb-4 w-full flex items-center justify-center gap-2 py-3 rounded-2xl border border-white/[0.14] bg-[#1d1d1d] text-[#f5f5f5] font-semibold text-xs sm:text-sm tracking-wide cursor-pointer shadow-[0_2px_0_rgba(0,0,0,0.5),0_3px_8px_rgba(0,0,0,0.35)]"
+        className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl border border-white/[0.14] bg-[#1d1d1d] text-[#f5f5f5] font-semibold text-xs sm:text-sm tracking-wide cursor-pointer shadow-[0_2px_0_rgba(0,0,0,0.5),0_3px_8px_rgba(0,0,0,0.35)]"
       >
         <span
           className="shrink-0 p-1.5 rounded-lg flex items-center justify-center text-yellowcustom"

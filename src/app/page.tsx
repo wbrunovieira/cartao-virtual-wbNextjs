@@ -358,16 +358,6 @@ export default function Home() {
             {t('saveContact')}
           </m.a>
 
-          {/* Share card — visitor forwards this card to someone else */}
-          <m.div variants={fadeUp}>
-            <ShareCard locale={locale} />
-          </m.div>
-
-          {/* Exchange contact — visitor sends their details */}
-          <m.div variants={fadeUp}>
-            <ExchangeContact locale={locale} />
-          </m.div>
-
           {/* Shared contacts */}
           <LinkCard title={t('sectionContact')} links={sharedContactLinks} dark />
 
@@ -470,6 +460,17 @@ export default function Home() {
               <p className="text-[#888] text-[11px] tracking-wide">card.wbdigitalsolutions.com</p>
               <p className="text-[#555] text-[10px] tracking-wide mt-1">© Bruno Vieira</p>
             </div>
+          </m.div>
+
+          {/* Exchange contact — visitor sends their details (kept at the end, like sharing) */}
+          <m.div variants={fadeUp} {...reveal} className="mt-4">
+            <ExchangeContact locale={locale} />
+          </m.div>
+
+          {/* Share card — kept at the very end so visitors who just want to say hi
+              don't mistake the WhatsApp share button for a direct message */}
+          <m.div variants={fadeUp} {...reveal}>
+            <ShareCard locale={locale} />
           </m.div>
         </m.div>
         </div>

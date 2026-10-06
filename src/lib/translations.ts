@@ -39,7 +39,7 @@ export const translations: Record<Locale, TranslationDict> = {
   pt: {
     welcomeHeadline: 'Bom ter você aqui.',
     welcomeBody:
-      'Aqui você encontra tudo para me chamar, explorar o que faço e decidir como posso ajudar.\n\nPela WB Digital Solutions, coloco a tecnologia para trabalhar pelo seu negócio: sites, plataformas, sistemas, aplicativos, e-commerces, automações e IA sob medida.',
+      'Aqui você encontra tudo para me chamar, explorar o que faço e decidir como posso ajudar.\n\nColoco a tecnologia para trabalhar pelo seu negócio: sites, plataformas, sistemas, aplicativos, e-commerces, automações e IA sob medida.',
     welcomeCta: 'Salve meu contato e me chame pelo app que você já usa. 👇',
     role: 'Fundador · WB Digital Solutions',
     saveContact: 'Salvar Contato',
@@ -74,7 +74,7 @@ export const translations: Record<Locale, TranslationDict> = {
   en: {
     welcomeHeadline: 'Good to have you here.',
     welcomeBody:
-      "Here you'll find everything to reach me, explore what I do and decide how I can help.\n\nThrough WB Digital Solutions, I put technology to work for your business: custom websites, platforms, systems, apps, e-commerce, automations and AI.",
+      "Here you'll find everything to reach me, explore what I do and decide how I can help.\n\nI put technology to work for your business: custom websites, platforms, systems, apps, e-commerce, automations and AI.",
     welcomeCta: 'Save my contact and reach me through the app you already use. 👇',
     role: 'Founder · WB Digital Solutions',
     saveContact: 'Save Contact',
@@ -109,7 +109,7 @@ export const translations: Record<Locale, TranslationDict> = {
   es: {
     welcomeHeadline: 'Qué bueno tenerte aquí.',
     welcomeBody:
-      'Aquí encuentras todo para contactarme, explorar lo que hago y decidir cómo puedo ayudarte.\n\nA través de WB Digital Solutions, pongo la tecnología a trabajar para tu negocio: sitios, plataformas, sistemas, aplicaciones, e-commerce, automatizaciones e IA a medida.',
+      'Aquí encuentras todo para contactarme, explorar lo que hago y decidir cómo puedo ayudarte.\n\nPongo la tecnología a trabajar para tu negocio: sitios, plataformas, sistemas, aplicaciones, e-commerce, automatizaciones e IA a medida.',
     welcomeCta: 'Guarda mi contacto y escríbeme por el app que ya usas. 👇',
     role: 'Fundador · WB Digital Solutions',
     saveContact: 'Guardar Contacto',
@@ -144,7 +144,7 @@ export const translations: Record<Locale, TranslationDict> = {
   it: {
     welcomeHeadline: 'Che piacere averti qui.',
     welcomeBody:
-      'Qui trovi tutto per contattarmi, esplorare ciò che faccio e capire come posso aiutarti.\n\nCon WB Digital Solutions, metto la tecnologia al servizio del tuo business: siti, piattaforme, sistemi, app, e-commerce, automazioni e IA su misura.',
+      'Qui trovi tutto per contattarmi, esplorare ciò che faccio e capire come posso aiutarti.\n\nMetto la tecnologia al servizio del tuo business: siti, piattaforme, sistemi, app, e-commerce, automazioni e IA su misura.',
     welcomeCta: "Salva il mio contatto e scrivimi tramite l'app che già usi. 👇",
     role: 'Fondatore · WB Digital Solutions',
     saveContact: 'Salva Contatto',

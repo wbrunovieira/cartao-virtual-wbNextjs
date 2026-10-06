@@ -52,7 +52,7 @@ export default function ShareCard({ locale }: { locale: Locale }) {
   const whatsappHref = `https://wa.me/?text=${encodeURIComponent(`${t.shareText} ${CARD_URL}`)}`;
 
   return (
-    <div className="mb-4 flex gap-2">
+    <div className="mt-4 flex gap-2">
       <m.a href={whatsappHref} target="_blank" rel="noopener noreferrer" className={buttonClass} {...hoverProps}>
         <span
           className="relative shrink-0 p-2 rounded-xl flex items-center justify-center text-green-400"
