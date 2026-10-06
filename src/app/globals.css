@@ -20,6 +20,25 @@ html.locale-pending body {
   visibility: hidden;
 }
 
+/* Entrance for above-the-fold blocks. Pure CSS so the content is in the
+   static HTML and paints without waiting for JS (better LCP). */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+.rise {
+  animation: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise {
+    animation: none;
+  }
+}
+
 /* Dark-theme overrides for react-phone-number-input */
 .exchange-phone {
   --PhoneInputCountrySelectArrow-color: #aaa;

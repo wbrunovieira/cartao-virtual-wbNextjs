@@ -36,6 +36,8 @@ export type TranslationDict = {
   close: string;
   languageSwitcher: string;
   services: [string, string, string, string];
+  scheduleLead: string;
+  scheduleLink: string;
 };
 
 export const translations: Record<Locale, TranslationDict> = {
@@ -75,7 +77,9 @@ export const translations: Record<Locale, TranslationDict> = {
     whatsappGreeting: 'Olá Bruno! Vi seu cartão digital e gostaria de conversar.',
     close: 'Fechar',
     languageSwitcher: 'Escolher idioma',
-    services: ['Sites & E-commerces', 'Automações', 'IA & Data Science', 'Consultoria Tech'],
+    services: ['Sites & E‑commerces', 'Sistemas & Plataformas', 'Automações', 'IA & Data Science'],
+    scheduleLead: 'Prefere conversar com calma?',
+    scheduleLink: 'Agende um horário',
   },
   en: {
     welcomeHeadline: 'Good to have you here.',
@@ -113,7 +117,9 @@ export const translations: Record<Locale, TranslationDict> = {
     whatsappGreeting: 'Hi Bruno! I saw your digital card and would like to talk.',
     close: 'Close',
     languageSwitcher: 'Choose language',
-    services: ['Websites & E-commerce', 'Automations', 'AI & Data Science', 'Tech Consulting'],
+    services: ['Websites & E‑commerce', 'Systems & Platforms', 'Automations', 'AI & Data Science'],
+    scheduleLead: 'Prefer a proper conversation?',
+    scheduleLink: 'Book a time',
   },
   es: {
     welcomeHeadline: 'Qué bueno tenerte aquí.',
@@ -151,7 +157,9 @@ export const translations: Record<Locale, TranslationDict> = {
     whatsappGreeting: '¡Hola Bruno! Vi tu tarjeta digital y me gustaría conversar.',
     close: 'Cerrar',
     languageSwitcher: 'Elegir idioma',
-    services: ['Sitios & E-commerce', 'Automatizaciones', 'IA & Data Science', 'Consultoría Tech'],
+    services: ['Sitios & E‑commerce', 'Sistemas & Plataformas', 'Automatizaciones', 'IA & Data Science'],
+    scheduleLead: '¿Prefieres conversar con calma?',
+    scheduleLink: 'Agenda una reunión',
   },
   it: {
     welcomeHeadline: 'Che piacere averti qui.',
@@ -189,6 +197,8 @@ export const translations: Record<Locale, TranslationDict> = {
     whatsappGreeting: 'Ciao Bruno! Ho visto il tuo biglietto digitale e vorrei parlarti.',
     close: 'Chiudi',
     languageSwitcher: 'Scegli la lingua',
-    services: ['Siti & E-commerce', 'Automazioni', 'IA & Data Science', 'Consulenza Tech'],
+    services: ['Siti & E‑commerce', 'Sistemi & Piattaforme', 'Automazioni', 'IA & Data Science'],
+    scheduleLead: 'Preferisci parlarne con calma?',
+    scheduleLink: 'Prenota un orario',
   },
 };

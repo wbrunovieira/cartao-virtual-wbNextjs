@@ -18,10 +18,12 @@ import {
   FaPhoneAlt,
   FaEnvelope,
   FaChevronRight,
+  FaArrowRight,
   FaCode,
   FaCogs,
   FaMicrochip,
-  FaLightbulb,
+  FaLayerGroup,
+  FaCalendarAlt,
 } from 'react-icons/fa';
 import Image from 'next/image';
 import { track } from '@vercel/analytics';
@@ -37,6 +39,13 @@ const QRCodeCanvas = dynamic(
 );
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+// wbdigitalsolutions.com serves English at the root and other languages
+// under a prefix — link visitors to the site in the language they picked.
+const SITE = 'https://www.wbdigitalsolutions.com';
+const SITE_PREFIX: Record<Locale, string> = { pt: '/pt', en: '', es: '/es', it: '/it' };
+
+const SCHEDULE_URL = 'https://agenda.wbdigitalsolutions.com/book';
 
 const LANGS: { code: Locale; flag: string; label: string }[] = [
   { code: 'pt', flag: '🇧🇷', label: 'PT' },
@@ -139,7 +148,7 @@ function LinkCard({ title, links, dark = false }: { title: string; links: LinkIt
               </p>
               <p className={`text-sm font-medium truncate ${dark ? 'text-[#f5f5f5]' : 'text-white'}`}>
                 {prefix && (
-                  <span className={`text-[11px] font-normal mr-1 ${dark ? 'text-[#555]' : 'text-white/40'}`}>
+                  <span className={`text-[11px] font-normal mr-1 ${dark ? 'text-[#999]' : 'text-white/60'}`}>
                     {prefix}{' '}
                   </span>
                 )}
@@ -216,6 +225,15 @@ export default function Home() {
       iconBg: 'rgba(136,136,136,0.15)',
     },
     {
+      id: 'email',
+      href: 'mailto:bruno@wbdigitalsolutions.com',
+      icon: <FaEnvelope className="text-base" />,
+      label: 'Email',
+      value: 'bruno@wbdigitalsolutions.com',
+      color: 'text-yellowcustom',
+      iconBg: 'rgba(255,185,71,0.15)',
+    },
+    {
       id: 'instagram_personal',
       href: 'https://www.instagram.com/wbrunovieira/',
       icon: <FaInstagram className="text-base" />,
@@ -235,22 +253,10 @@ export default function Home() {
     },
   ];
 
-  const wbContactLinks: LinkItem[] = [
-    {
-      id: 'email',
-      href: 'mailto:bruno@wbdigitalsolutions.com',
-      icon: <FaEnvelope className="text-base" />,
-      label: 'Email',
-      value: 'bruno@wbdigitalsolutions.com',
-      color: 'text-yellowcustom',
-      iconBg: 'rgba(255,185,71,0.15)',
-    },
-  ];
-
   const wbSocialLinks: LinkItem[] = [
     {
       id: 'site',
-      href: 'https://www.wbdigitalsolutions.com',
+      href: `${SITE}${SITE_PREFIX[locale] || '/'}`,
       icon: <FaGlobe className="text-base" />,
       label: t('labelSite'),
       value: 'wbdigitalsolutions.com',
@@ -277,11 +283,12 @@ export default function Home() {
     },
   ];
 
-  const serviceIcons = [
-    { icon: <FaCode />, iconBg: 'rgba(56,189,248,0.15)', color: 'text-sky-400' },
-    { icon: <FaCogs />, iconBg: 'rgba(196,181,253,0.15)', color: 'text-purple-300' },
-    { icon: <FaMicrochip />, iconBg: 'rgba(255,185,71,0.15)', color: 'text-yellowcustom' },
-    { icon: <FaLightbulb />, iconBg: 'rgba(74,222,128,0.15)', color: 'text-green-400' },
+  // Same order as t('services'); each tile opens its page on the WB site.
+  const services = [
+    { path: 'websites', icon: <FaCode />, iconBg: 'rgba(56,189,248,0.15)', color: 'text-sky-400' },
+    { path: 'systems', icon: <FaLayerGroup />, iconBg: 'rgba(74,222,128,0.15)', color: 'text-green-400' },
+    { path: 'automation', icon: <FaCogs />, iconBg: 'rgba(196,181,253,0.15)', color: 'text-purple-300' },
+    { path: 'ai', icon: <FaMicrochip />, iconBg: 'rgba(255,185,71,0.15)', color: 'text-yellowcustom' },
   ];
 
   return (
@@ -294,14 +301,12 @@ export default function Home() {
           style={{ background: spineColor }}
         />
         <div className="min-h-screen bg-[#0e0e0e] flex items-start justify-center px-3 py-6 sm:px-4 sm:py-8">
-          <m.div
-            className="relative w-full max-w-sm z-10"
-            variants={stagger}
-            initial="hidden"
-            animate="show"
-          >
+          {/* initial={false}: above-the-fold blocks render visible in the static
+              HTML (their entrance is the CSS .rise animation, which needs no JS);
+              below-the-fold blocks still opt into scroll reveals via `reveal`. */}
+          <m.div className="relative w-full max-w-sm z-10" initial={false}>
           {/* Language switcher */}
-          <m.div variants={fadeUp} className="flex justify-center mb-4">
+          <div className="rise flex justify-center mb-4">
             <div role="group" aria-label={t('languageSwitcher')} className="flex gap-0.5 bg-white/10 backdrop-blur-md rounded-full p-1 border border-white/20 shadow-lg">
               {LANGS.map(({ code, flag, label }) => (
                 <button
@@ -328,12 +333,12 @@ export default function Home() {
                 </button>
               ))}
             </div>
-          </m.div>
+          </div>
 
           {/* Welcome */}
-          <m.div
-            variants={fadeUp}
-            className="rounded-3xl overflow-hidden bg-[#141414] border border-[#252525] shadow-2xl mb-4"
+          <div
+            className="rise rounded-3xl overflow-hidden bg-[#141414] border border-[#252525] shadow-2xl mb-4"
+            style={{ animationDelay: '80ms' }}
           >
             <div className="px-5 pt-5 pb-5">
               <div className="flex items-center gap-4 mb-5">
@@ -353,11 +358,10 @@ export default function Home() {
               </div>
               <p className="text-[#f5f5f5]/50 text-sm leading-relaxed mt-4">{t('welcomeCta')}</p>
             </div>
-          </m.div>
+          </div>
 
           {/* Save Contact — shared button */}
           <m.a
-            variants={fadeUp}
             href="/bruno.vcf"
             download="bruno.vcf"
             onClick={() => track('save_contact')}
@@ -373,8 +377,9 @@ export default function Home() {
               boxShadow: '0 1px 0px #2d0a3a, 0 2px 6px rgba(0,0,0,0.3)',
               transition: { duration: 0.1 },
             }}
-            className="mb-4 w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl font-bold text-sm tracking-wide text-white"
+            className="rise mb-4 w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl font-bold text-sm tracking-wide text-white"
             style={{
+              animationDelay: '160ms',
               background: 'linear-gradient(180deg, #9b3bb8 0%, #792990 50%, #4a1259 100%)',
               boxShadow: '0 3px 0px #2d0a3a, 0 4px 8px rgba(0,0,0,0.4)',
             }}
@@ -425,7 +430,6 @@ export default function Home() {
               </div>
             </m.div>
 
-            <LinkCard title={t('sectionContact')} links={wbContactLinks} />
             <LinkCard title={t('sectionSocial')} links={wbSocialLinks} />
 
             {/* Services */}
@@ -438,19 +442,34 @@ export default function Home() {
                 <h2 className="text-white/60 text-[10px] uppercase tracking-widest mb-3">{t('sectionServices')}</h2>
                 <m.div variants={stagger} {...reveal} className="grid grid-cols-2 gap-2">
                   {t('services').map((label, i) => (
-                    <m.div
+                    <m.a
                       key={label}
                       variants={popIn}
-                      className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 border border-white/10 text-center"
+                      href={`${SITE}${SITE_PREFIX[locale]}/${services[i].path}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => track('link_click', { link: `service_${services[i].path}` })}
+                      whileHover={{
+                        y: -2,
+                        backgroundColor: 'rgba(255,255,255,0.12)',
+                        borderColor: 'rgba(255,255,255,0.28)',
+                        transition: { duration: 0.25, ease: EASE },
+                      }}
+                      whileTap={{ scale: 0.97, transition: { duration: 0.1 } }}
+                      className="relative flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 border border-white/10 text-center"
                     >
+                      <FaArrowRight
+                        aria-hidden
+                        className="absolute top-2.5 right-2.5 text-[9px] text-white/30 -rotate-45"
+                      />
                       <span
-                        className={`${serviceIcons[i].color} p-2.5 rounded-xl text-lg flex items-center justify-center`}
-                        style={{ background: serviceIcons[i].iconBg }}
+                        className={`${services[i].color} p-2.5 rounded-xl text-lg flex items-center justify-center`}
+                        style={{ background: services[i].iconBg }}
                       >
-                        {serviceIcons[i].icon}
+                        {services[i].icon}
                       </span>
                       <span className="text-white/90 text-xs leading-snug">{label}</span>
-                    </m.div>
+                    </m.a>
                   ))}
                 </m.div>
               </div>
@@ -496,6 +515,22 @@ export default function Home() {
           <m.div variants={fadeUp} {...revealEnd}>
             <ShareCard locale={locale} />
           </m.div>
+
+          {/* Schedule — deliberately low-key, for visitors who want a call */}
+          <m.a
+            variants={fadeUp}
+            {...revealEnd}
+            href={SCHEDULE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => track('link_click', { link: 'schedule' })}
+            className="mt-5 flex items-center justify-center gap-2 py-2 text-xs text-[#999] hover:text-[#f5f5f5] transition-colors"
+          >
+            <FaCalendarAlt aria-hidden className="text-yellowcustom/80" />
+            <span>
+              {t('scheduleLead')} <span className="underline underline-offset-4 decoration-white/25">{t('scheduleLink')}</span>
+            </span>
+          </m.a>
         </m.div>
         </div>
       </MotionConfig>

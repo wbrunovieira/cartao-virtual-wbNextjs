@@ -25,12 +25,7 @@ export default function PhotoArc({ reduce = false }: { reduce?: boolean }) {
         };
 
   return (
-    <m.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.6, ease: EASE, delay: 0.1 }}
-      className="relative shrink-0 w-[5.5rem] h-[5.5rem]"
-    >
+    <div className="relative shrink-0 w-[5.5rem] h-[5.5rem]">
       {/* Faint outer arc */}
       <m.div
         aria-hidden
@@ -73,6 +68,6 @@ export default function PhotoArc({ reduce = false }: { reduce?: boolean }) {
           className="w-full h-full object-cover"
         />
       </div>
-    </m.div>
+    </div>
   );
 }
