@@ -32,6 +32,9 @@ export type TranslationDict = {
   labelPhone: string;
   labelSite: string;
   labelInstagramPersonal: string;
+  whatsappGreeting: string;
+  close: string;
+  languageSwitcher: string;
   services: [string, string, string, string];
 };
 
@@ -69,6 +72,9 @@ export const translations: Record<Locale, TranslationDict> = {
     labelPhone: 'Telefone',
     labelSite: 'Site',
     labelInstagramPersonal: 'Instagram Pessoal',
+    whatsappGreeting: 'Olá Bruno! Vi seu cartão digital e gostaria de conversar.',
+    close: 'Fechar',
+    languageSwitcher: 'Escolher idioma',
     services: ['Sites & E-commerces', 'Automações', 'IA & Data Science', 'Consultoria Tech'],
   },
   en: {
@@ -104,6 +110,9 @@ export const translations: Record<Locale, TranslationDict> = {
     labelPhone: 'Phone',
     labelSite: 'Website',
     labelInstagramPersonal: 'Personal Instagram',
+    whatsappGreeting: 'Hi Bruno! I saw your digital card and would like to talk.',
+    close: 'Close',
+    languageSwitcher: 'Choose language',
     services: ['Websites & E-commerce', 'Automations', 'AI & Data Science', 'Tech Consulting'],
   },
   es: {
@@ -139,6 +148,9 @@ export const translations: Record<Locale, TranslationDict> = {
     labelPhone: 'Teléfono',
     labelSite: 'Sitio Web',
     labelInstagramPersonal: 'Instagram Personal',
+    whatsappGreeting: '¡Hola Bruno! Vi tu tarjeta digital y me gustaría conversar.',
+    close: 'Cerrar',
+    languageSwitcher: 'Elegir idioma',
     services: ['Sitios & E-commerce', 'Automatizaciones', 'IA & Data Science', 'Consultoría Tech'],
   },
   it: {
@@ -174,6 +186,9 @@ export const translations: Record<Locale, TranslationDict> = {
     labelPhone: 'Telefono',
     labelSite: 'Sito Web',
     labelInstagramPersonal: 'Instagram Personale',
+    whatsappGreeting: 'Ciao Bruno! Ho visto il tuo biglietto digitale e vorrei parlarti.',
+    close: 'Chiudi',
+    languageSwitcher: 'Scegli la lingua',
     services: ['Siti & E-commerce', 'Automazioni', 'IA & Data Science', 'Consulenza Tech'],
   },
 };

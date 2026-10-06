@@ -1,11 +1,12 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 import { motion as m, AnimatePresence, MotionConfig } from 'framer-motion';
 import { FaUserPlus, FaTimes } from 'react-icons/fa';
 import PhoneInput from 'react-phone-number-input';
 import type { Country } from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
+import { track } from '@vercel/analytics';
 import { translations, type Locale } from '@/lib/translations';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -31,12 +32,13 @@ const LANGUAGE_BY_LOCALE: Record<Locale, string> = {
   it: 'it',
 };
 
+const noopSubscribe = () => () => {};
+
 type Status = 'idle' | 'sending' | 'success' | 'error';
 
 export default function ExchangeContact({ locale }: { locale: Locale }) {
   const t = translations[locale];
 
-  const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
   const [openedAt, setOpenedAt] = useState(0);
   const [name, setName] = useState('');
@@ -52,7 +54,7 @@ export default function ExchangeContact({ locale }: { locale: Locale }) {
   const lastFocused = useRef<HTMLElement | null>(null);
 
   // Portal target only exists in the browser.
-  useEffect(() => setMounted(true), []);
+  const mounted = useSyncExternalStore(noopSubscribe, () => true, () => false);
 
   // While open: lock background scroll, trap focus, close on Escape, and
   // restore focus to the trigger on close.
@@ -104,6 +106,7 @@ export default function ExchangeContact({ locale }: { locale: Locale }) {
   }, [open]);
 
   function openModal() {
+    track('exchange_open');
     setStatus('idle');
     setErrorMsg('');
     setOpenedAt(Date.now());
@@ -156,6 +159,7 @@ export default function ExchangeContact({ locale }: { locale: Locale }) {
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
+      track('exchange_submit');
       setStatus('success');
       setName('');
       setPhone(undefined);
@@ -242,7 +246,7 @@ export default function ExchangeContact({ locale }: { locale: Locale }) {
                       <button
                         type="button"
                         onClick={closeModal}
-                        aria-label="Close"
+                        aria-label={t.close}
                         className="shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-[#1e1e1e] border border-[#2a2a2a] text-[#999] hover:text-white transition-colors cursor-pointer"
                       >
                         <FaTimes className="text-sm" />

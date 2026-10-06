@@ -14,6 +14,12 @@ body {
   overscroll-behavior: none;
 }
 
+/* Set by the inline script in layout.tsx for non-pt visitors until the
+   translated text is rendered — avoids a flash of Portuguese. */
+html.locale-pending body {
+  visibility: hidden;
+}
+
 /* Dark-theme overrides for react-phone-number-input */
 .exchange-phone {
   --PhoneInputCountrySelectArrow-color: #aaa;

@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { motion as m } from 'framer-motion';
 import { FaShareAlt, FaCheck, FaWhatsapp } from 'react-icons/fa';
+import { track } from '@vercel/analytics';
 import { translations, type Locale } from '@/lib/translations';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -25,6 +26,7 @@ export default function ShareCard({ locale }: { locale: Locale }) {
   const [copied, setCopied] = useState(false);
 
   async function handleShare() {
+    track('share', { method: 'more_options' });
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
         await navigator.share({
@@ -53,7 +55,12 @@ export default function ShareCard({ locale }: { locale: Locale }) {
 
   return (
     <div className="mt-4 flex gap-2">
-      <m.a href={whatsappHref} target="_blank" rel="noopener noreferrer" className={buttonClass} {...hoverProps}>
+      <m.a
+        href={whatsappHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => track('share', { method: 'whatsapp' })}
+        className={buttonClass} {...hoverProps}>
         <span
           className="relative shrink-0 p-2 rounded-xl flex items-center justify-center text-green-400"
           style={{ background: 'rgba(74,222,128,0.15)' }}

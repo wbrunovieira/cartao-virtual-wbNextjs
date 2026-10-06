@@ -6,12 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint ."
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "framer-motion": "^12.38.0",
     "next": "16.2.2",
-    "qrcode": "^1.5.4",
     "qrcode.react": "^4.2.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
@@ -19,14 +19,13 @@
     "react-phone-number-input": "^3.4.17"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.5",
     "@tailwindcss/postcss": "^4.2.2",
     "@types/node": "^20",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.4.27",
     "eslint": "^9",
-    "eslint-config-next": "15.2.4",
+    "eslint-config-next": "16.2.2",
     "lightningcss": "^1.32.0",
     "tailwindcss": "^4.2.2",
     "typescript": "^5"

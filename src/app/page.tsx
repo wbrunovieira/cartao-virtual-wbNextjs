@@ -24,10 +24,12 @@ import {
   FaLightbulb,
 } from 'react-icons/fa';
 import Image from 'next/image';
+import { track } from '@vercel/analytics';
 import { useLocale } from '@/hooks/useLocale';
 import type { Locale } from '@/lib/translations';
 import ExchangeContact from '@/components/ExchangeContact';
 import ShareCard from '@/components/ShareCard';
+import PhotoArc from '@/components/PhotoArc';
 
 const QRCodeCanvas = dynamic(
   () => import('qrcode.react').then((m) => ({ default: m.QRCodeCanvas })),
@@ -48,6 +50,9 @@ const LANGS: { code: Locale; flag: string; label: string }[] = [
 const VIEWPORT = { once: true, margin: '-12% 0px' } as const;
 // Props applied to any block that should reveal as it scrolls into view.
 const reveal = { initial: 'hidden', whileInView: 'show', viewport: VIEWPORT } as const;
+// For the last blocks on the page: they can never scroll past the -12% margin
+// (the page ends first), so trigger as soon as any part is visible.
+const revealEnd = { initial: 'hidden', whileInView: 'show', viewport: { once: true } } as const;
 
 const stagger = {
   hidden: {},
@@ -81,6 +86,8 @@ type LinkItem = {
   color: string;
   iconBg: string;
   prefix?: string;
+  // Analytics id sent with the `link_click` event.
+  id: string;
 };
 
 function LinkCard({ title, links, dark = false }: { title: string; links: LinkItem[]; dark?: boolean }) {
@@ -100,7 +107,7 @@ function LinkCard({ title, links, dark = false }: { title: string; links: LinkIt
         </p>
       </div>
       <m.div variants={stagger} {...reveal} className="px-4 pb-4 flex flex-col gap-2">
-        {links.map(({ href, icon, label, value, color, iconBg, prefix }) => (
+        {links.map(({ href, icon, label, value, color, iconBg, prefix, id }) => (
           <m.a
             key={label}
             variants={slideIn}
@@ -113,6 +120,7 @@ function LinkCard({ title, links, dark = false }: { title: string; links: LinkIt
             }}
             whileTap={{ y: 0, scale: 0.98, transition: { duration: 0.1 } }}
             href={href}
+            onClick={() => track('link_click', { link: id })}
             target={href.startsWith('tel') || href.startsWith('mailto') ? '_self' : '_blank'}
             rel="noopener noreferrer"
             className={`flex items-center gap-3 px-3 py-3 rounded-2xl border ${
@@ -188,7 +196,8 @@ export default function Home() {
 
   const sharedContactLinks: LinkItem[] = [
     {
-      href: 'https://wa.me/5511982864581',
+      id: 'whatsapp',
+      href: `https://wa.me/5511982864581?text=${encodeURIComponent(t('whatsappGreeting'))}`,
       icon: <FaWhatsapp className="text-base" />,
       label: 'WhatsApp',
       value: '(11) 98286-4581',
@@ -197,6 +206,7 @@ export default function Home() {
       iconBg: 'rgba(74,222,128,0.15)',
     },
     {
+      id: 'phone',
       href: 'tel:+551150264203',
       icon: <FaPhoneAlt className="text-base" />,
       label: t('labelPhone'),
@@ -206,6 +216,7 @@ export default function Home() {
       iconBg: 'rgba(136,136,136,0.15)',
     },
     {
+      id: 'instagram_personal',
       href: 'https://www.instagram.com/wbrunovieira/',
       icon: <FaInstagram className="text-base" />,
       label: t('labelInstagramPersonal'),
@@ -214,6 +225,7 @@ export default function Home() {
       iconBg: 'rgba(244,114,182,0.15)',
     },
     {
+      id: 'linkedin',
       href: 'https://www.linkedin.com/in/walter-bruno-vieira/',
       icon: <FaLinkedin className="text-base" />,
       label: 'LinkedIn',
@@ -225,6 +237,7 @@ export default function Home() {
 
   const wbContactLinks: LinkItem[] = [
     {
+      id: 'email',
       href: 'mailto:bruno@wbdigitalsolutions.com',
       icon: <FaEnvelope className="text-base" />,
       label: 'Email',
@@ -236,6 +249,7 @@ export default function Home() {
 
   const wbSocialLinks: LinkItem[] = [
     {
+      id: 'site',
       href: 'https://www.wbdigitalsolutions.com',
       icon: <FaGlobe className="text-base" />,
       label: t('labelSite'),
@@ -244,6 +258,7 @@ export default function Home() {
       iconBg: 'rgba(56,189,248,0.15)',
     },
     {
+      id: 'instagram_wb',
       href: 'https://instagram.com/wb.digitalsolutions',
       icon: <FaInstagram className="text-base" />,
       label: 'Instagram',
@@ -252,6 +267,7 @@ export default function Home() {
       iconBg: 'rgba(244,114,182,0.15)',
     },
     {
+      id: 'facebook',
       href: 'https://facebook.com/wb.digitalsolutions',
       icon: <FaFacebook className="text-base" />,
       label: 'Facebook',
@@ -286,10 +302,12 @@ export default function Home() {
           >
           {/* Language switcher */}
           <m.div variants={fadeUp} className="flex justify-center mb-4">
-            <div className="flex gap-0.5 bg-white/10 backdrop-blur-md rounded-full p-1 border border-white/20 shadow-lg">
+            <div role="group" aria-label={t('languageSwitcher')} className="flex gap-0.5 bg-white/10 backdrop-blur-md rounded-full p-1 border border-white/20 shadow-lg">
               {LANGS.map(({ code, flag, label }) => (
                 <button
                   key={code}
+                  type="button"
+                  aria-pressed={locale === code}
                   onClick={() => setLocale(code)}
                   className="relative px-2.5 py-1.5 sm:px-3 rounded-full text-xs font-semibold cursor-pointer"
                 >
@@ -305,7 +323,7 @@ export default function Home() {
                       locale === code ? 'text-white' : 'text-white/60 hover:text-white'
                     }`}
                   >
-                    {flag} {label}
+                    <span aria-hidden>{flag}</span> {label}
                   </span>
                 </button>
               ))}
@@ -318,8 +336,13 @@ export default function Home() {
             className="rounded-3xl overflow-hidden bg-[#141414] border border-[#252525] shadow-2xl mb-4"
           >
             <div className="px-5 pt-5 pb-5">
-              <h1 className="text-xl font-bold text-[#f5f5f5] tracking-wide">Bruno Vieira</h1>
-              <p className="text-[#666] text-xs mt-0.5 mb-5">{t('role')}</p>
+              <div className="flex items-center gap-4 mb-5">
+                <PhotoArc reduce={reduce} />
+                <div className="min-w-0">
+                  <h1 className="text-xl font-bold text-[#f5f5f5] tracking-wide">Bruno Vieira</h1>
+                  <p className="text-[#888] text-xs mt-0.5">{t('role')}</p>
+                </div>
+              </div>
               <h2 className="text-[#f5f5f5] font-semibold text-base mb-2 leading-snug">
                 {t('welcomeHeadline')}
               </h2>
@@ -335,8 +358,9 @@ export default function Home() {
           {/* Save Contact — shared button */}
           <m.a
             variants={fadeUp}
-            href="bruno.vcf"
+            href="/bruno.vcf"
             download="bruno.vcf"
+            onClick={() => track('save_contact')}
             whileHover={{
               scale: 1.03,
               y: -3,
@@ -463,13 +487,13 @@ export default function Home() {
           </m.div>
 
           {/* Exchange contact — visitor sends their details (kept at the end, like sharing) */}
-          <m.div variants={fadeUp} {...reveal} className="mt-4">
+          <m.div variants={fadeUp} {...revealEnd} className="mt-4">
             <ExchangeContact locale={locale} />
           </m.div>
 
           {/* Share card — kept at the very end so visitors who just want to say hi
               don't mistake the WhatsApp share button for a direct message */}
-          <m.div variants={fadeUp} {...reveal}>
+          <m.div variants={fadeUp} {...revealEnd}>
             <ShareCard locale={locale} />
           </m.div>
         </m.div>
